@@ -42,6 +42,7 @@ class User(models.Model):
 class Product(model.Models):
     description= models.CharField(max_length=200)
     price= models.DecimalField(decimal_place=2, max_digits=5)
+    picture= models.ImageField()
     created_at= models.DateTimeField(auto_now_add=True)
     updated_at= models.DateTimeField(auto_now=True)
 
