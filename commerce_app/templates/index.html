@@ -19,6 +19,7 @@
             <ul class= "nav navbar-nav">
                 <li class= "active"><a href="#">Home</a></li>
                 <li><a href="/login">Login</a></li>
+                <li><a href="/cart">Cart</a></li>
             </ul>
         </div>
     </nav>
@@ -37,10 +38,33 @@
                 <tr>
                     <td>Example 1</td>
                     <td>Eample 1</td>
-                    <td> Example 1</td>
+                    <td> 
+                        <form action="/add" method="post">
+                        {% csrf_token %}
+                            <div class="form-group form-inline">
+                                <div>
+                                    <label for="sel1">Quantity</label>
+                                    <select class="form-control" id="sel1" type="select">
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                    </select>
+                                    <input type="submit" value="Add to Cart" class="btn btn-default">
+                                </div>
+                            <!-- </div>
+                                <button class="btn btn-default form-inline">Add to Cart</button>
+                            </div> -->
+                        </form>
+                    </td>
                 </tr>
             </tbody>
         </table>
     </div>
+
+    <footer class="panel-footer">
+        
+    </footer>
 </body>
 </html>
