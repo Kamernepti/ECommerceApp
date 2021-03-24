@@ -23,5 +23,57 @@
             </ul>
         </div>
     </nav>
+
+    <div class="container">
+        <h1>Store</h1>
+        <table class = "table table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Price</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                
+                    <td> 
+                        <form action="/update" method="post">
+                        {% csrf_token %}
+                            <div class="form-group form-inline">
+                                <div>
+                                    <label for="sel1">Quantity</label>
+                                    <select class="form-control" id="sel1" type="select">
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                    </select>
+                                    <input type="submit" value="Add to Cart" class="btn btn-default">
+                                </div>
+                        </form>
+                        <form action="/destroy" method="post">
+                        {% csrf_token %}
+                            <div class="form-group form-inline">
+                                <div class="form-group form-inline">
+                                    <input type="submit" value="Remove" class="btn btn-default">
+                                </div>
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <form action="/purchase" method="post">
+    {% csrf_token %}
+        <div class="form-group form-inline offset-md-3">
+            <button type="button" class= "btn btn-primary col-md-2">Purchase</button>
+        </div>
+    </form>
+
 </body>
 </html>

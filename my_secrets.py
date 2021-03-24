@@ -1,0 +1,1 @@
+SECRET_KEY = 'd^3&kf4vkv33hpbsxik$-qlzasqv)rrrjwt5tp8ry&egzz8)z8'

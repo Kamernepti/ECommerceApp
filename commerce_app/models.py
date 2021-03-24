@@ -5,7 +5,7 @@ import bcrypt
 
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 
-class UserManager(models.Model):
+class UserManager(models.Manager):
     def reg_validation(self, form):
         errors={}
         if len(form['fname']) < 1:
@@ -39,16 +39,15 @@ class User(models.Model):
 
     objects=UserManager()
 
-class Product(model.Models):
+class Product(models.Model):
     description= models.CharField(max_length=200)
-    price= models.DecimalField(decimal_place=2, max_digits=5)
-    picture= models.ImageField()
+    price= models.DecimalField(decimal_places=2, max_digits=5)
     created_at= models.DateTimeField(auto_now_add=True)
     updated_at= models.DateTimeField(auto_now=True)
 
-class Order(model.Models):
+class Order(models.Model):
     quantity_ordered= models.IntegerField()
-    total_price=models.DecimalField(decimal_places=2, max_digits=6)
+    total_price=models.DecimalField(max_digits=6, decimal_places=2) 
     purchaser= models.ForeignKey (User, on_delete=models.CASCADE)
     created_at= models.DateTimeField(auto_now_add=True)
     updated_at= models.DateTimeField(auto_now=True)
