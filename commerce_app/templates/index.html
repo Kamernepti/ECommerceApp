@@ -19,13 +19,14 @@
             <ul class= "nav navbar-nav">
                 <li class= "active"><a href="#">Home</a></li>
                 <li><a href="/login">Login</a></li>
+                <li><a href="/logout">Logout</a></li>
                 <li><a href="/cart">Cart</a></li>
             </ul>
         </div>
     </nav>
 
     <div class="container">
-        <h1>Store</h1>
+        <h1>Welcome {{user.first_name}}</h1>
         <table class = "table table-hover table-striped">
             <thead>
                 <tr>
@@ -37,8 +38,8 @@
             <tbody>
                 {% for item in products %}
                 <tr>
-                    <td>{{item.description}}</td>
-                    <td>${{item.price}}</td>
+                    <td name="description">{{item.description}}</td>
+                    <td name="price">${{item.price}}</td>
                 
                     <td> 
                         <form action="/add" method="post">
@@ -46,7 +47,7 @@
                             <div class="form-group form-inline">
                                 <div>
                                     <label for="sel1">Quantity</label>
-                                    <select class="form-control" id="sel1" type="select">
+                                    <select class="form-control" id="sel1" name="sel1" type="select">
                                         <option>1</option>
                                         <option>2</option>
                                         <option>3</option>
@@ -55,9 +56,6 @@
                                     </select>
                                     <input type="submit" value="Add to Cart" class="btn btn-default">
                                 </div>
-                            <!-- </div>
-                                <button class="btn btn-default form-inline">Add to Cart</button>
-                            </div> -->
                         </form>
                     </td>
                 </tr>
