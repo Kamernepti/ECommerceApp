@@ -1,5 +1,6 @@
 from django.db import models
 from django import forms
+from django.urls import reverse
 import re
 import bcrypt
 
@@ -10,7 +11,7 @@ class UserManager(models.Manager):
         errors={}
         if len(form['fname']) < 1:
             errors['fname'] = 'First Name must have at least 1 character'
-        if len(form['lname'])<1:
+        if len(form['lname']) < 1:
             errors['lname'] = 'Last Name must have at least 1 character'
         if not EMAIL_REGEX.match(form['email']):
             errors['email'] = "Invalid Email format"
@@ -19,7 +20,7 @@ class UserManager(models.Manager):
             errors['email'] = 'Email already in use'
         if len(form['password']) < 7:
             errors['password'] = 'Password must contain at least 7 characters'
-        if (form['password'] != ['confirmpw']):
+        if (form['password'] != form['confirmpw']):
             errors['password'] = 'Passwords do not match'
         return errors
     def log_validation(self, email, password):
@@ -45,9 +46,15 @@ class Product(models.Model):
     created_at= models.DateTimeField(auto_now_add=True)
     updated_at= models.DateTimeField(auto_now=True)
 
+class Cart(models.Model):
+    description= models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity= models.IntegerField()
+    buyer= models.ForeignKey (User, on_delete=models.CASCADE)
+    created_at= models.DateTimeField(auto_now_add=True)
+    updated_at= models.DateTimeField(auto_now=True)
+
 class Order(models.Model):
-    quantity_ordered= models.IntegerField()
-    total_price=models.DecimalField(max_digits=6, decimal_places=2) 
+    total_price=models.DecimalField(max_digits=6, decimal_places=2)
     purchaser= models.ForeignKey (User, on_delete=models.CASCADE)
     created_at= models.DateTimeField(auto_now_add=True)
     updated_at= models.DateTimeField(auto_now=True)
