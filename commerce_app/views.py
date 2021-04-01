@@ -79,17 +79,20 @@ def cart(request):
 def add(request, product_id):
     if 'user_id' in request.session:
         user=User.objects.get(id=request.session['user_id'])
-        item = Product.objects.get(id=request.session['product_id'])
+        item= Product.objects.get(id=product_id)
         if request.method == "POST":
             Cart.objects.create(
-                item= item.description,
+                item= item,
                 buyer=user
             )
         return redirect('/')
     if 'user_id' not in request.session:
         return redirect('/login')
 
-
+def remove(request, product_id):
+    product_to_delete=Cart.objects.get(id=product_id)
+    product_to_delete.delete()
+    return redirect('/cart')
 
 def purchase(request, user_id):
     if 'user_id' in request.session:
