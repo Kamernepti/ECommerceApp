@@ -52,13 +52,16 @@
             {% endfor %}
             </tbody>
         </table>
+
+        <form action="/purchase" method="post">
+        {% csrf_token %}
+            <div class="form-group form-inline offset-md-4">
+                <button type="submit" class= "btn btn-primary col-md-2">Purchase</button>
+            </div>
+        </form>
     </div>
-    <form action="/purchase" method="post">
-    {% csrf_token %}
-        <div class="form-group form-inline offset-md-3">
-            <button type="button" class= "btn btn-primary col-md-2">Purchase</button>
-        </div>
-    </form>
+
+    
 
 </body>
 </html>

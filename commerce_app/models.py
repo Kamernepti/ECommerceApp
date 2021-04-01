@@ -42,7 +42,7 @@ class User(models.Model):
 
 class Product(models.Model):
     name= models.CharField(max_length=200)
-    price= models.DecimalField(decimal_places=2, max_digits=5)
+    price= models.FloatField()
     created_at= models.DateTimeField(auto_now_add=True)
     updated_at= models.DateTimeField(auto_now=True)
 
@@ -53,7 +53,7 @@ class Cart(models.Model):
     updated_at= models.DateTimeField(auto_now=True)
 
 class Order(models.Model):
-    total_price=models.DecimalField(max_digits=6, decimal_places=2)
+    total_price=models.FloatField()
     purchaser= models.ForeignKey (User, on_delete=models.CASCADE)
     created_at= models.DateTimeField(auto_now_add=True)
     updated_at= models.DateTimeField(auto_now=True)

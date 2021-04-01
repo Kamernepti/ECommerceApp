@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from .models import *
 from django.contrib import messages
 from django.db.models import Sum
-from django.db.models import Count
+
 
 def index(request):
     context = {
@@ -66,7 +66,7 @@ def logout(request):
 
 def cart(request):
     if 'user_id' in request.session:
-        user= User.objects.filter(id=request.session['user_id'])
+        user= User.objects.get(id=request.session['user_id'])
         if user:
             context ={
                 "cart" : Cart.objects.filter(buyer=request.session['user_id']),
@@ -94,12 +94,40 @@ def remove(request, product_id):
     product_to_delete.delete()
     return redirect('/cart')
 
-def purchase(request, user_id):
-    if 'user_id' in request.session:
-        user=User.objects.filter(id=request.session['user_id'])
-        if user:
-            context = {
-                "order":Order.objects.filter(purchaser=request.session['user_id'])
-            }
-        return render (request,'checkout.html', context)
-    return redirect('/')
+def checkout(request):
+    user=User.objects.get(id=request.session['user_id'])
+    context = {
+        "order": Order.objects.filter(purchaser=user).last()
+    }
+    return render(request, 'checkout.html')
+
+
+# def purchase(request):
+#     if request.method == "POST":
+#         if 'user_id' in request.session:
+#             user=User.objects.get(id=request.session['user_id'])
+#             if user:
+#                 Order.objects.create(
+#                     total_price= Cart.objects.filter(buyer=request.session['user_id']).aggregate(total=Sum('item__price')),
+#                     purchaser=user
+#                 )
+#             return redirect ('/checkout')
+#         else:
+#             return redirect('/login')
+#     else:
+#         return redirect('/')
+
+def purchase(request):
+    if request.method == "POST":
+        if 'user_id' in request.session:
+            user=User.objects.get(id=request.session['user_id'])
+            if user:
+                Order.objects.create(
+                    total_price= Cart.objects.filter(buyer=request.session['user_id']).aggregate(total=Sum('item__price')),
+                    purchaser=user
+                )
+            return redirect ('/checkout')
+        else:
+            return redirect('/login')
+    else:
+        return redirect('/')
