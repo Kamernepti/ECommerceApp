@@ -13,6 +13,7 @@ def index(request):
         if user:
             context ={
                 "user": user[0],
+                "products": Product.objects.all(),
             }
         return render(request,'index.html', context)
     return render(request, 'index.html', context)
@@ -75,15 +76,18 @@ def cart(request):
     #     return redirect('/login')
 
 
-def add(request):
-    user=User.objects.get(id=request.session['user_id'])
-    if request.method == "POST":
-        Cart.objects.create(
-            description= request.POST["description"],
-            quantity= request.POST["sel1"],
-            buyer=user
-        )
-    return redirect('/')
+def add(request, product_id):
+    if 'user_id' in request.session:
+        user=User.objects.get(id=request.session['user_id'])
+        item = Product.objects.get(id=request.session['product_id'])
+        if request.method == "POST":
+            Cart.objects.create(
+                item= item.description,
+                buyer=user
+            )
+        return redirect('/')
+    if 'user_id' not in request.session:
+        return redirect('/login')
 
 
 
