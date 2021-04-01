@@ -97,9 +97,10 @@ def remove(request, product_id):
 def checkout(request):
     user=User.objects.get(id=request.session['user_id'])
     context = {
-        "order": Order.objects.filter(purchaser=user).last()
+        "orders": Order.objects.get(purchaser=user).last(),
+        "user":user
     }
-    return render(request, 'checkout.html')
+    return render(request, 'checkout.html', context)
 
 
 # def purchase(request):
@@ -123,7 +124,7 @@ def purchase(request):
             user=User.objects.get(id=request.session['user_id'])
             if user:
                 Order.objects.create(
-                    total_price= Cart.objects.filter(buyer=request.session['user_id']).aggregate(total=Sum('item__price')),
+                    total_price= Cart.objects.filter(buyer=request.session['user_id']).aggregate(total=Sum('item__price'))['total'],
                     purchaser=user
                 )
             return redirect ('/checkout')
