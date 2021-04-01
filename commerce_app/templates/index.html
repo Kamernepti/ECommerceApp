@@ -30,7 +30,6 @@
         <table class = "table table-hover table-striped">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Item</th>
                     <th>Price</th>
                     <th>Action</th>
@@ -39,11 +38,10 @@
             <tbody>
                 {% for item in products %}
                 <tr>
-                    <td name="product_id">{{item.id}}</td>
-                    <td name="description">{{item.description}}</td>
+                    <td name="name">{{item.name}}</td>
                     <td name="price">${{item.price}}</td>
                     <td> 
-                        <form action="/add" method="post">
+                        <form action="/add/{{item.id}}" method="post">
                         {% csrf_token %}
                             <div class="form-group form-inline">
                                 <input type="submit" value="Add to Cart" class="btn btn-default">

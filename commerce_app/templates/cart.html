@@ -35,36 +35,21 @@
                 </tr>
             </thead>
             <tbody>
+            {% for item in cart %}
                 <tr>
-                    <td></td>
-                    <td></td>
+                    <td>{{item.item.name}}</td>
+                    <td>${{item.item.price}}</td>
                 
                     <td> 
-                        <form action="/update" method="post">
+                        <form action="/remove/{{item.id}}" method="post">
                         {% csrf_token %}
                             <div class="form-group form-inline">
-                                <div>
-                                    <label for="sel1">Quantity</label>
-                                    <select class="form-control" id="sel1" type="select">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                    </select>
-                                    <input type="submit" value="Add to Cart" class="btn btn-default">
-                                </div>
-                        </form>
-                        <form action="/destroy" method="post">
-                        {% csrf_token %}
-                            <div class="form-group form-inline">
-                                <div class="form-group form-inline">
-                                    <input type="submit" value="Remove" class="btn btn-default">
-                                </div>
+                                <input type="submit" value="Remove" class="btn btn-default">
                             </div>
                         </form>
                     </td>
                 </tr>
+            {% endfor %}
             </tbody>
         </table>
     </div>
