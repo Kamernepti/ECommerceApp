@@ -26,10 +26,8 @@
     </nav>
 
     <div class="container">
-        <h1>Thank you for your purchase</h1>
-        <!-- working here to get the last entry for a user to display -->
-        <p>{{Order.total_price}}</p> 
-        <p>{{user.first_name}} </p>
+        <h1>Thank you for your purchase {{user.first_name}}</h1>
+        <p>Total Order: {{orders.total_price}}</p>
     </div>
 
 </body>

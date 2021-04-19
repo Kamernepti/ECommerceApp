@@ -72,9 +72,22 @@ def cart(request):
                 "cart" : Cart.objects.filter(buyer=request.session['user_id']),
             }
         return render(request, 'cart.html', context)
-    # if 'user_id' not in request.session:
-    #     return redirect('/login')
+    if 'user_id' not in request.session:
+        return redirect('/login')
 
+
+def remove(request, product_id):
+    product_to_delete=Cart.objects.get(id=product_id)
+    product_to_delete.delete()
+    return redirect('/cart')
+
+def checkout(request):
+    user=User.objects.get(id=request.session['user_id'])
+    context = {
+        "orders": Order.objects.filter(purchaser_id=user).last(),
+        "user":user
+    }
+    return render(request, 'checkout.html', context)
 
 def add(request, product_id):
     if 'user_id' in request.session:
@@ -89,46 +102,14 @@ def add(request, product_id):
     if 'user_id' not in request.session:
         return redirect('/login')
 
-def remove(request, product_id):
-    product_to_delete=Cart.objects.get(id=product_id)
-    product_to_delete.delete()
-    return redirect('/cart')
-
-def checkout(request):
-    user=User.objects.get(id=request.session['user_id'])
-    context = {
-        "orders": Order.objects.get(purchaser=user).last(),
-        "user":user
-    }
-    return render(request, 'checkout.html', context)
-
-
-# def purchase(request):
-#     if request.method == "POST":
-#         if 'user_id' in request.session:
-#             user=User.objects.get(id=request.session['user_id'])
-#             if user:
-#                 Order.objects.create(
-#                     total_price= Cart.objects.filter(buyer=request.session['user_id']).aggregate(total=Sum('item__price')),
-#                     purchaser=user
-#                 )
-#             return redirect ('/checkout')
-#         else:
-#             return redirect('/login')
-#     else:
-#         return redirect('/')
-
 def purchase(request):
-    if request.method == "POST":
-        if 'user_id' in request.session:
-            user=User.objects.get(id=request.session['user_id'])
-            if user:
-                Order.objects.create(
-                    total_price= Cart.objects.filter(buyer=request.session['user_id']).aggregate(total=Sum('item__price'))['total'],
-                    purchaser=user
-                )
-            return redirect ('/checkout')
-        else:
-            return redirect('/login')
-    else:
-        return redirect('/')
+    if 'user_id' in request.session:
+        user= User.objects.get(id=request.session['user_id'])
+        if request.session=='POST':
+            Order.objects.create(
+                total_price =Cart.objects.filter(buyer=request.session['user_id']).aggregate(toatl=Sum('item__price'))['total'],
+                purchaser= user
+            )
+        Cart.objects.filter(buyer=user).delete()
+        return redirect('/checkout')
+    return redirect ('/login')
