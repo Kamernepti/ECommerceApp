@@ -94,12 +94,16 @@ def remove(request, product_id):
     product_to_delete.delete()
     return redirect('/cart')
 
+
+#left off here- trying to access only the last entry from a single user for display
 def checkout(request):
     user=User.objects.get(id=request.session['user_id'])
     context = {
-        "orders": Order.objects.get(purchaser=user).last(),
+        "orders": Order.objects.filter(purchaser=user).last(),
         "user":user
     }
+    empty_cart=Cart.objects.filter(buyer=user)
+    empty_cart.delete()
     return render(request, 'checkout.html', context)
 
 
